@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f4f4f9;
+        }
+
+        button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #current-price {
+            margin-top: 30px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ethereum & Bitcoin Current Updated Prices</h1>
+
+    <button id="btn-btc">Bitcoin</button>
+    <button id="btn-eth">Ethereum</button> 
+
+    <h2 id="current-price">Select a currency to view live market data.</h2>
+
+    <script>
+        // O teu código JavaScript continua aqui em baixo, antes do fim do body
+        const display = document.getElementById('current-price');
+
+        async function fetchPrice(coin) {
+            display.innerText = "Loading...";
+            const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=usd`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const price = data[coin].usd;
+                display.innerText = `The current price of ${coin.toUpperCase()} is $${price} USD`;
+            } catch (error) {
+                display.innerText = "Error loading price.";
+                console.error(error);
+            }
+        } 
+
+        document.getElementById('btn-btc').addEventListener('click', () => fetchPrice('bitcoin'));
+        document.getElementById('btn-eth').addEventListener('click', () => fetchPrice('ethereum'));
+    </script>
+</body>
+</html>
